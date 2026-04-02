@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Building, CreditCard, Mail, LogOut, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, Building, CreditCard, Mail, LogOut, Shield, Wallet } from 'lucide-react';
 
 const nav = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -7,6 +7,7 @@ const nav = [
   { to: '/organizations', icon: Building, label: 'Organisations' },
   { to: '/plans', icon: CreditCard, label: 'Plans' },
   { to: '/leads', icon: Mail, label: 'Leads' },
+  { to: '/stripe', icon: Wallet, label: 'Stripe' },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {

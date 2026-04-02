@@ -59,6 +59,7 @@ export const adminApi = {
   // Organizations
   getOrganizations: () => get<any[]>('/admin/organizations'),
   updateOrganization: (id: string, data: any) => put<any>(`/admin/organizations/${id}`, data),
+  deleteOrganization: (id: string) => del(`/admin/organizations/${id}`),
 
   // Plans
   getPlans: () => get<any[]>('/admin/plans'),

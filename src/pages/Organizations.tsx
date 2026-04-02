@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../services/api';
-import { Loader2, Users, FileText, Building } from 'lucide-react';
+import { Loader2, Users, FileText, Building, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function OrganizationsPage() {
@@ -20,6 +20,16 @@ export function OrganizationsPage() {
       const updated = await adminApi.updateOrganization(org.id, { plan_id: newPlanId });
       setOrgs(prev => prev.map(o => o.id === org.id ? { ...o, ...updated } : o));
       toast.success(`Plan mis a jour pour ${org.name}`);
+    } catch (err: any) { toast.error(err.message); }
+  };
+
+  const handleDelete = async (org: any) => {
+    if (!confirm(`SUPPRIMER "${org.name}" et TOUTES ses donnees (${org.clientCount} clients, ${org.reportCount} rapports) ? Cette action est irreversible.`)) return;
+    if (!confirm(`Derniere confirmation : supprimer definitivement l'organisation "${org.name}" ?`)) return;
+    try {
+      await adminApi.deleteOrganization(org.id);
+      setOrgs(prev => prev.filter(o => o.id !== org.id));
+      toast.success(`Organisation "${org.name}" supprimee`);
     } catch (err: any) { toast.error(err.message); }
   };
 
@@ -50,10 +60,15 @@ export function OrganizationsPage() {
                 </div>
               </div>
 
-              <select value={org.plan_id} onChange={e => handleChangePlan(org, e.target.value)}
-                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 outline-none">
-                {plans.map(p => <option key={p.id} value={p.id}>{p.name} ({(p.price_cents / 100).toFixed(0)} EUR)</option>)}
-              </select>
+              <div className="flex items-center gap-2">
+                <select value={org.plan_id} onChange={e => handleChangePlan(org, e.target.value)}
+                  className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 outline-none">
+                  {plans.map(p => <option key={p.id} value={p.id}>{p.name} ({(p.price_cents / 100).toFixed(0)} EUR)</option>)}
+                </select>
+                <button onClick={() => handleDelete(org)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Supprimer l'organisation">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center gap-6 mt-4 pt-4 border-t border-gray-100">

@@ -6,6 +6,7 @@ import { UsersPage } from './pages/Users';
 import { OrganizationsPage } from './pages/Organizations';
 import { PlansPage } from './pages/Plans';
 import { LeadsPage } from './pages/Leads';
+import { StripePage } from './pages/Stripe';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('sb_token');
@@ -27,6 +28,7 @@ export function App() {
                 <Route path="/organizations" element={<OrganizationsPage />} />
                 <Route path="/plans" element={<PlansPage />} />
                 <Route path="/leads" element={<LeadsPage />} />
+                <Route path="/stripe" element={<StripePage />} />
               </Routes>
             </AdminLayout>
           </ProtectedRoute>
