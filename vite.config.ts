@@ -13,4 +13,9 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 5174,
+    host: '0.0.0.0',
+    allowedHosts: ['admin.blankonta.fr'],
+  },
 });
