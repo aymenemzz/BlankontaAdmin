@@ -66,6 +66,10 @@ export const adminApi = {
   createPlan: (data: any) => post<any>('/admin/plans', data),
   updatePlan: (id: string, data: any) => put<any>(`/admin/plans/${id}`, data),
 
+  // Settings
+  getSettings: () => get<any>('/admin/settings'),
+  updateSettings: (data: any) => put<any>('/admin/settings', data),
+
   // Leads
   getLeads: () => get<any[]>('/admin/leads'),
   updateLead: (id: number, data: any) => put<any>(`/admin/leads/${id}`, data),
