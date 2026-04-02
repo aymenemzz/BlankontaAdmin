@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../services/api';
-import { Loader2, Trash2, CheckCircle, Clock, UserCheck, Mail } from 'lucide-react';
+import { Loader2, Trash2, CheckCircle, Clock, UserCheck, Mail, Send } from 'lucide-react';
 import { toast } from 'sonner';
 
 const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
@@ -31,6 +31,15 @@ export function LeadsPage() {
       await adminApi.deleteLead(lead.id);
       setLeads(prev => prev.filter(l => l.id !== lead.id));
       toast.success('Lead supprime');
+    } catch (err: any) { toast.error(err.message); }
+  };
+
+  const handleInvite = async (lead: any) => {
+    if (!confirm(`Envoyer une invitation Beta a ${lead.prenom} ${lead.nom} (${lead.email}) ?`)) return;
+    try {
+      const res = await adminApi.inviteLead(lead.id);
+      setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, status: 'contacte' } : l));
+      toast.success(res.message);
     } catch (err: any) { toast.error(err.message); }
   };
 
@@ -81,9 +90,16 @@ export function LeadsPage() {
                       </select>
                     </td>
                     <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                      {lead.status !== 'converti' && (
+                        <button onClick={() => handleInvite(lead)} className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-lg" title="Envoyer invitation Beta">
+                          <Send className="w-3.5 h-3.5" /> Inviter
+                        </button>
+                      )}
                       <button onClick={() => handleDelete(lead)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg" title="Supprimer">
                         <Trash2 className="w-4 h-4" />
                       </button>
+                      </div>
                     </td>
                   </tr>
                 );

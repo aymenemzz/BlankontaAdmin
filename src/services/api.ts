@@ -70,4 +70,5 @@ export const adminApi = {
   getLeads: () => get<any[]>('/admin/leads'),
   updateLead: (id: number, data: any) => put<any>(`/admin/leads/${id}`, data),
   deleteLead: (id: number) => del(`/admin/leads/${id}`),
+  inviteLead: (id: number) => post<any>(`/admin/leads/${id}/invite`),
 };
